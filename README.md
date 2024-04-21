@@ -106,9 +106,9 @@ You can evaluate both single-scale and multi-scale models under the `eval.sh` gu
 
 ```
 # eval single scale model
-python eval.py --ckpt CKPT_PATH --out_dir OUT_DIR --scale 1 --save_image
+python eval.py --ckpt CKPT_PATH --data DATA_PATH --out_dir OUT_DIR --scale 1 --save_image
 # eval multi scale model
-python eval.py --ckpt CKPT_PATH --out_dir OUT_DIR --scale 4 --save_image
+python eval.py --ckpt CKPT_PATH --data DATA_PATH --out_dir OUT_DIR --scale 4 --save_image
 # summarize the result again if you have saved the pnsr.txt and ssim.txt
 python eval.py --ckpt CKPT_PATH --out_dir OUT_DIR --scale 4 --summa_only
 ```

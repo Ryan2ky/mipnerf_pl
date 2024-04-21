@@ -176,7 +176,7 @@ class MipNerf(torch.nn.Module):
             randomized: bool, use randomized stratified sampling.
             white_bkgd: bool, if True, use white as the background (black o.w.).
         Returns:
-            ret: list, [*(rgb, distance, acc)]
+            ret: list, [*(rgb, distance, acc, weights, t_samples)]
         """
 
         ret = []

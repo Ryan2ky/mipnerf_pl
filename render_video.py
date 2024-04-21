@@ -136,7 +136,7 @@ def run_render(args):
             distances, accs = [], []
             with torch.no_grad():
                 for batch_rays in single_image_rays:
-                    _, (f_rgb, distance, acc) = model(batch_rays, False, args.white_bkgd)
+                    _, (f_rgb, distance, acc, _, _) = model(batch_rays, False, args.white_bkgd)
                     fine_rgb.append(f_rgb)
                     distances.append(distance)
                     accs.append(acc)
