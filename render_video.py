@@ -118,9 +118,10 @@ def run_render(args):
 
     hparams = model.hparams
     exp_name = hparams['exp_name']
+    render_path = os.path.join(args.out_dir, exp_name, 'render_spheric')
 
     for i in range(args.scale):
-        os.makedirs(os.path.join(args.out_dir, 'render_spheric', exp_name, str(2 ** i)), exist_ok=True)
+        os.makedirs(os.path.join(render_path, str(2 ** i)), exist_ok=True)
 
     focal = .5 * args.base_size[0] / np.tan(.5 * args.camera_angle_x)
     render_dataset = RenderGen(focal, args.base_size, args.scale)
@@ -148,9 +149,9 @@ def run_render(args):
             fine_rgb = fine_rgb.reshape(1, height, width, fine_rgb.shape[-1])  # N H W C
             distances = distances.reshape(height, width)  # H W
             accs = accs.reshape(height, width)  # H W
-            out_path = os.path.join(args.out_dir, 'render_spheric', exp_name, str(int(args.base_size[0] / width)))
+            out_path = os.path.join(render_path, str(int(args.base_size[0] / width)))
             save_images(fine_rgb, distances, accs, out_path, idx%nums)
-    generate_video(os.path.join(args.out_dir, 'render_spheric', exp_name))
+    generate_video(render_path)
 
 
 def generate_video(image_path):

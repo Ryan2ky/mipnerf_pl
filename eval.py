@@ -42,8 +42,9 @@ def main(args):
     psnr_values = []
     ssim_values = []
     n = -1
+    test_path = os.path.join(args.out_dir, exp_name, 'test')
     for i in range(args.scale):
-        save_path = os.path.join(args.out_dir, 'test', exp_name, str(2 ** i))
+        save_path = os.path.join(test_path, str(2 ** i))
         os.makedirs(save_path, exist_ok=True)
     with torch.no_grad():
         for idx, batch in enumerate(tqdm(test_loader)):
@@ -73,14 +74,14 @@ def main(args):
             psnr_val, ssim_val = eval_errors(fine_rgb, rgbs)
             psnr_values.append(psnr_val.cpu().item())
             ssim_values.append(ssim_val.cpu().item())
-            out_path = os.path.join(args.out_dir, 'test', exp_name, str(int(args.base_size[0] / width)))
+            out_path = os.path.join(test_path, str(int(args.base_size[0] / width)))
             if args.save_image:
                 save_images(fine_rgb, distances, accs, out_path, n)
-        with open(os.path.join(args.out_dir, 'test', exp_name, 'psnrs.txt'), 'w') as f:
+        with open(os.path.join(test_path, 'psnrs.txt'), 'w') as f:
             f.write(' '.join([str(v) for v in psnr_values]))
-        with open(os.path.join(args.out_dir, 'test', exp_name, 'ssims.txt'), 'w') as f:
+        with open(os.path.join(test_path, 'ssims.txt'), 'w') as f:
             f.write(' '.join([str(v) for v in ssim_values]))
-        generate_video(os.path.join(args.out_dir, 'test', exp_name))
+        generate_video(test_path)
         return [exp_name]
 
 
@@ -90,7 +91,4 @@ if __name__ == '__main__':
     blender_scenes = main(args)
     # I remove the LPIPS metric, if you want to eval it, you should modify eval code simply.
     print('PSNR | SSIM | Average')
-    if args.scale == 1:
-        print(summarize_results(args.out_dir, blender_scenes, 1))
-    else:
-        print(summarize_results(args.out_dir, blender_scenes, args.scale))
+    print(summarize_results(args.out_dir, blender_scenes, args.scale))
