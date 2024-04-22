@@ -42,6 +42,7 @@ def main(hparams):
     callbacks = [ckpt_cb, pbar]
 
     logger = TensorBoardLogger(save_dir=os.path.join(hparams['out_dir'], hparams['exp_name']),
+                               name='logs',
                                default_hp_metric=False)
 
     trainer = Trainer(
