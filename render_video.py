@@ -15,6 +15,18 @@ Rays = collections.namedtuple(
     ('origins', 'directions', 'viewdirs', 'radii', 'lossmult', 'near', 'far'))
 Rays_keys = Rays._fields
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--ckpt", help="Path to ckpt.")
+parser.add_argument("--out_dir", help="Output directory.", type=str, required=True)
+parser.add_argument("--chunk_size", help="Chunck size for render.", type=int, default=12288)
+parser.add_argument("--white_bkgd", help="Train set image background color.", type=bool, default=True)
+parser.add_argument("--render_images_dir", help="already render image directory.", type=str, default=None)
+parser.add_argument('--scale', help='must specify nums of scale', type=int, required=True)
+parser.add_argument('--base_size', help='source image size', type=list, default=[800, 800])
+parser.add_argument('--camera_angle_x', help='camera_angle_x in source dataset',
+                    type=float, default=0.6911112070083618)
+parser.add_argument('--gen_video_only', help='if you have generate image already, you can generate video '
+                                                'and do not need render again', action='store_true')
 
 class RenderGen(Dataset):
     def __init__(self, base_focal, base_size, scales=4):
@@ -181,18 +193,6 @@ def generate_video(image_path):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--ckpt", help="Path to ckpt.")
-    parser.add_argument("--out_dir", help="Output directory.", type=str, required=True)
-    parser.add_argument("--chunk_size", help="Chunck size for render.", type=int, default=12288)
-    parser.add_argument("--white_bkgd", help="Train set image background color.", type=bool, default=True)
-    parser.add_argument("--render_images_dir", help="already render image directory.", type=str, default=None)
-    parser.add_argument('--scale', help='must specify nums of scale', type=int, required=True)
-    parser.add_argument('--base_size', help='source image size', type=list, default=[800, 800])
-    parser.add_argument('--camera_angle_x', help='camera_angle_x in source dataset',
-                        type=float, default=0.6911112070083618)
-    parser.add_argument('--gen_video_only', help='if you have generate image already, you can generate video '
-                                                 'and do not need render again', action='store_true')
     args = parser.parse_args()
     if not args.gen_video_only:
         run_render(args)
