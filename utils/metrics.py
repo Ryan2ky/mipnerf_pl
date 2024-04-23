@@ -134,7 +134,7 @@ def summarize_results(folder, scene_names, num_buckets):
     for scene_name in scene_names:
         values = []
         for metric_name in metric_names:
-            filename = os.path.join(folder, 'test', scene_name, f'{metric_name}.txt')
+            filename = os.path.join(folder, scene_name, 'test', f'{metric_name}.txt')
             with open(filename) as f:
                 v = np.array([float(s) for s in f.readline().split(' ')])
                 values.append(np.mean(np.reshape(v, [-1, num_buckets]), 0))
